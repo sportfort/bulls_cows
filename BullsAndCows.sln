@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		computerGuess.js = computerGuess.js
 		index.html = index.html
 		sharedUtils.js = sharedUtils.js
+		styles.css = styles.css
 		userGuess.js = userGuess.js
 	EndProjectSection
 EndProject

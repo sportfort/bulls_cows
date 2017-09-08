@@ -1,10 +1,23 @@
-var gameComputer = new ComputerGuessGame();
+var gameComputer = new ComputerGuessGame({
+    showMessage: function (messageText) {
+        document.getElementById("messageBox").textContent = messageText;
+    },
+    readBullsCows: function () {
+        var result = document.getElementById("bullsCount").value + document.getElementById("cowsCount").value;
+        document.getElementById("bullsCount").value = "";
+        document.getElementById("cowsCount").value = "";
+        return result;
+    },
+    showGame: function () {
+        document.getElementById("userGuessUI").style.display = "none";
+        document.getElementById("computerGuessUI").style.display = "block";
+    },
+    hideGame: function() {
+        document.getElementById("computerGuessUI").style.display = "none";
+    }
+});
 
-function startComputerGuess() {
-    gameComputer.startGame();
-}
-
-function ComputerGuessGame() {
+function ComputerGuessGame(ui) {
     var possibleNumbers;
 
     var generatePossibleNumbers = function () {
@@ -35,11 +48,20 @@ function ComputerGuessGame() {
         "40"
     ];
 
-    var checkUserInput = function(input) {
-        return validInputs.indexOf(input) >= 0;
+    var checkUserInput = function (input) {
+        if (validInputs.indexOf(input) >= 0)
+            return {
+                valid: true
+            }
+        else {
+            return {
+                message: "Please enter correct amount of bulls and cows",
+                valid: false
+            }
+        }
     };
 
-    var filterPossibleNumbers = function(guessNumber, userInput) {
+    var filterPossibleNumbers = function (guessNumber, userInput) {
         var i = possibleNumbers.length;
         while (i--) {
             var bullsAndCows = countBullsCows(possibleNumbers[i], guessNumber);
@@ -49,38 +71,68 @@ function ComputerGuessGame() {
         }
     };
 
-    var tryGuess = function () {
+    var guessNumber;
+    var tryGuess = function() {
         var randomIndex = Math.ceil(Math.random() * possibleNumbers.length - 1);
-        var guessNumber = possibleNumbers[randomIndex];
-        var userInput = prompt("My guess is " + guessNumber + ". What is the result?");
+        guessNumber = possibleNumbers[randomIndex];
+        ui.showMessage("My guess is " + guessNumber + ". What is the result?");
+    };
 
+    var validateGuess = function (userInput) {
         if (!userInput) {
-            alert("Game over");
-            return true;
+            return {
+                message: "No user input - game over",
+                gameOver: true
+            };
         }
 
-        if (!checkUserInput(userInput))
-            return false;
+        var vaidationResult = checkUserInput(userInput);
+        if (!vaidationResult.valid)
+            return {
+                message: vaidationResult.message,
+                validationError: true,
+                gameOver: false
+            };
 
         filterPossibleNumbers(guessNumber, userInput);
 
         if (possibleNumbers.length === 1) {
-            alert("I won! The number is " + possibleNumbers[0]);
-            return true;
+            return {
+                message: "I won! The number is " + possibleNumbers[0],
+                gameOver: true
+            };
         }
 
         if (possibleNumbers.length === 0) {
-            alert("You trying to confuse me, no such number is possible. Game over.");
-            return true;
+            return {
+                message: "You trying to confuse me, no such number is possible. Game over.",
+                gameOver: true
+            };
         }
-        return false;
+
+        return {
+            gameOver: false
+        };
     }
+
+    var finishGame = function () {
+        ui.hideGame();
+    };
 
     this.startGame = function () {
+        ui.showGame();
         possibleNumbers = generatePossibleNumbers();
+        tryGuess();
+    };
 
-        var gameOver = false;
-        while (!gameOver)
-            gameOver = tryGuess();
-    }
+    this.processUserInput = function () {
+        var userInput = ui.readBullsCows();
+        var result = validateGuess(userInput);
+        if (result.message)
+            ui.showMessage(result.message);
+        if (result.gameOver)
+            finishGame();
+        else if (!result.validationError)
+            tryGuess();
+    };
 }

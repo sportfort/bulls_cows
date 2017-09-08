@@ -3,12 +3,28 @@
 <head>
     <meta charset="utf-8" />
     <title>Bulls and cows game</title>
+    <link href="styles.css" rel="stylesheet"/>
 </head>
 <body>
     <h1>Bulls &amp; Cows</h1>
     <h3>Choose a game to play:</h3>
-    <button onclick="startUserGuess();">You guess computer number</button>
-    <button onclick="startComputerGuess();">Computer guess your number</button>
+    <button onclick="gameUser.startGame();">You guess computer number</button>
+    <button onclick="gameComputer.startGame();">Computer guess your number</button>
+    <h2 id="messageBox"></h2>
+    <div id="userGuessUI" style="display: none">
+        <label>Your guess:</label>
+        <input type="text" id="userInput" />
+        <br/>
+        <button onclick="gameUser.processUserInput()">Try guess</button>
+    </div>
+    <div id="computerGuessUI" style="display: none">
+        <label>Bulls:</label>
+        <input type="text" id="bullsCount" /><br/>
+        <label>Cows:</label>
+        <input type="text" id="cowsCount" />
+        <br />
+        <button onclick="gameComputer.processUserInput()">Validate guess</button>
+    </div>
     <script src="sharedUtils.js"></script>
     <script src="computerGuess.js"></script>
     <script src="userGuess.js"></script>
