@@ -5,8 +5,10 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AF3FF736-FE1F-45D7-B00A-A9EA21F5F6C8}"
 	ProjectSection(SolutionItems) = preProject
+		computerGuess.js = computerGuess.js
 		index.html = index.html
-		scripts.js = scripts.js
+		sharedUtils.js = sharedUtils.js
+		userGuess.js = userGuess.js
 	EndProjectSection
 EndProject
 Global
