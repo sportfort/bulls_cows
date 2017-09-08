@@ -48,16 +48,23 @@ function ComputerGuessGame(ui) {
         "40"
     ];
 
-    var checkUserInput = function (input) {
-        if (validInputs.indexOf(input) >= 0)
+    var checkUserInput = function(input) {
+        if (!input) {
             return {
-                valid: true
-            }
-        else {
+                message: "Please enter something to the inputs!",
+                valid: false
+            };
+        }
+
+        if (validInputs.indexOf(input) < 0) {
             return {
                 message: "Please enter correct amount of bulls and cows",
                 valid: false
             }
+        }
+
+        return {
+            valid: true
         }
     };
 
@@ -79,13 +86,6 @@ function ComputerGuessGame(ui) {
     };
 
     var validateGuess = function (userInput) {
-        if (!userInput) {
-            return {
-                message: "No user input - game over",
-                gameOver: true
-            };
-        }
-
         var vaidationResult = checkUserInput(userInput);
         if (!vaidationResult.valid)
             return {

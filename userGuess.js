@@ -30,6 +30,13 @@ function UserGuessGame(ui) {
     var number;
 
     var checkDigits = function (guessNumber) {
+        if (!guessNumber) {
+            return {
+                message: "Please enter something to the input!",
+                valid: false
+            };
+        }
+
         if (!/^[1-9]{4}$/.test(guessNumber)) {
             return {
                 message: "Please enter exactly 4 different digits from 1 to 9 (letters, symbols, and digit zero (0) are not allowed)!",
@@ -57,13 +64,6 @@ function UserGuessGame(ui) {
     }
 
     var validateGuess = function (guessNumber) {
-        if (!guessNumber) {
-            return {
-                message: "No user input - Game over",
-                gameOver: true
-            };
-        }
-
         var validationResult = checkDigits(guessNumber);
         if (!validationResult.valid)
             return {
